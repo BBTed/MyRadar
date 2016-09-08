@@ -192,7 +192,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     dbHelper.addPokemon(pokemon);
                 }
                 latestLng -= moveDistance;
-                
+
                 Message message = new Message();
                 message.arg1 = left;
                 mBackgroundHandler.sendMessageDelayed(message, 1000);
