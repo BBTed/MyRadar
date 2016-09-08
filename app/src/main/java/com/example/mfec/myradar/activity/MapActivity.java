@@ -7,7 +7,6 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +40,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     double lat = 13.744728, lng = 100.56340;
     double maxLat = lat + 0.02, minLat = lat - 0.02, maxLng = lng + 0.02, minLng = lng - 0.02;
     double moveDistance = 0.0001;
-    double latestLat = lat, latestLng = lng;
+    double latestLat = maxLat, latestLng = minLng;
     LocationManager lm;
     MyDBHelper dbHelper;
     TextView tvTotalPokemon;
@@ -189,13 +188,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         @Override
         public void onResponse(Call<CollectionPokemon> call, Response<CollectionPokemon> response) {
             if (response.isSuccessful()) {
-                Log.d("pokemon", response.body().getMessage());
-                Log.d("pokemon", response.body().getPokemonList().size() + "");
                 for (PokemonDao pokemon : response.body().getPokemonList()) {
                     dbHelper.addPokemon(pokemon);
                 }
                 latestLng -= moveDistance;
-                Log.d("pokemon", latestLng + " " + latestLat);
+                
                 Message message = new Message();
                 message.arg1 = left;
                 mBackgroundHandler.sendMessageDelayed(message, 1000);
@@ -218,13 +215,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         @Override
         public void onResponse(Call<CollectionPokemon> call, Response<CollectionPokemon> response) {
             if (response.isSuccessful()) {
-                Log.d("pokemon", response.body().getMessage());
-                Log.d("pokemon", response.body().getPokemonList().size() + "");
                 for (PokemonDao pokemon : response.body().getPokemonList()) {
                     dbHelper.addPokemon(pokemon);
                 }
                 latestLng += moveDistance;
-                Log.d("pokemon", latestLng + " " + latestLat);
+
                 Message message = new Message();
                 message.arg1 = right;
                 mHandler.sendMessage(message);
